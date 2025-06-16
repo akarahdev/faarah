@@ -1,0 +1,26 @@
+--- a/net/minecraft/server/Main.java
++++ b/net/minecraft/server/Main.java
+@@ -16,6 +_,9 @@
+ import java.util.Optional;
+ import java.util.function.BooleanSupplier;
+ import javax.annotation.Nullable;
++
++import dev.akarah.faarah.server.plugin.PluginLoader;
++import dev.akarah.faarah.server.plugin.PluginRepository;
+ import joptsimple.OptionParser;
+ import joptsimple.OptionSet;
+ import joptsimple.OptionSpec;
+@@ -68,6 +_,13 @@
+     )
+     @DontObfuscate
+     public static void main(String[] args) {
++        // Faarah start - Load plugins during startup
++        var pluginLoader = PluginLoader.of();
++        pluginLoader.loadFromDirectories(Path.of("./plugins/"));
++        pluginLoader.load();
++        PluginRepository.getInstance().startupAllPlugins();
++        // Faarah end
++
+         SharedConstants.tryDetectVersion();
+         OptionParser optionParser = new OptionParser();
+         OptionSpec<Void> optionSpec = optionParser.accepts("nogui");

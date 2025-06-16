@@ -12,3 +12,5 @@ plugins {
 }
 
 include("paper-server")
+include("faarah-api")
+include("test-plugin")

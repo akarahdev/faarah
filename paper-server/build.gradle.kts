@@ -4,24 +4,22 @@ plugins {
     id("io.papermc.paperweight.core") version "2.0.0-beta.17"
 }
 
-repositories {
-    maven("https://repo.papermc.io/repository/maven-public/")
-}
-
 group = "dev.akarah"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    maven("https://repo.papermc.io/repository/maven-public/")
     mavenCentral()
 }
 
 dependencies {
     mache("io.papermc:mache:1.21.5+build.3")
     paperclip("io.papermc:paperclip:3.0.3")
+    implementation(project(":faarah-api"))
 }
 
-tasks.test {
-    useJUnitPlatform()
+java {
+    modularity.inferModulePath.set(true)
 }
 
 paperweight {
