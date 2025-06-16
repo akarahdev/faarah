@@ -1,15 +1,14 @@
 --- a/net/minecraft/server/Main.java
 +++ b/net/minecraft/server/Main.java
-@@ -16,6 +_,9 @@
- import java.util.Optional;
- import java.util.function.BooleanSupplier;
- import javax.annotation.Nullable;
-+
+@@ -5,6 +_,8 @@
+ import com.mojang.logging.LogUtils;
+ import com.mojang.serialization.Dynamic;
+ import com.mojang.serialization.Lifecycle;
 +import dev.akarah.faarah.server.plugin.PluginLoader;
 +import dev.akarah.faarah.server.plugin.PluginRepository;
- import joptsimple.OptionParser;
- import joptsimple.OptionSet;
- import joptsimple.OptionSpec;
+ import java.awt.GraphicsEnvironment;
+ import java.io.File;
+ import java.io.IOException;
 @@ -68,6 +_,13 @@
      )
      @DontObfuscate

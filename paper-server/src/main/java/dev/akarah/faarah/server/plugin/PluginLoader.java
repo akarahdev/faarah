@@ -1,5 +1,6 @@
 package dev.akarah.faarah.server.plugin;
 
+import dev.akarah.faarah.api.EventHandler;
 import dev.akarah.faarah.api.Plugin;
 
 import java.io.IOException;
@@ -93,6 +94,10 @@ public class PluginLoader {
             case "dev.akarah.faarah.api.Plugin" -> {
                 var plugin = createInstanceUnsafe(clazz);
                 PluginRepository.getInstance().loadPlugin((Plugin) plugin);
+            }
+            case "dev.akarah.faarah.api.EventHandler" -> {
+                var eventHandler = createInstanceUnsafe(clazz);
+                PluginRepository.getInstance().loadEventHandler((EventHandler) eventHandler);
             }
             default -> {}
         }

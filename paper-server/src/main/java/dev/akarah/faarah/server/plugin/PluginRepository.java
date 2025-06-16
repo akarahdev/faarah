@@ -1,16 +1,19 @@
 package dev.akarah.faarah.server.plugin;
 
+import dev.akarah.faarah.api.EventHandler;
 import dev.akarah.faarah.api.Plugin;
 
 import java.util.HashSet;
 import java.util.ServiceLoader;
 import java.util.Set;
+import java.util.function.Consumer;
 
 public class PluginRepository {
     static PluginRepository REPOSITORY = new PluginRepository();
 
     ServiceLoader<Plugin> pluginServiceLoader;
     Set<Plugin> plugins = new HashSet<>();
+    Set<EventHandler> eventHandlers = new HashSet<>();
 
     public static PluginRepository getInstance() {
         return REPOSITORY;
@@ -18,6 +21,14 @@ public class PluginRepository {
 
     public void loadPlugin(Plugin plugin) {
         plugins.add(plugin);
+    }
+
+    public void loadEventHandler(EventHandler eventHandler) {
+        eventHandlers.add(eventHandler);
+    }
+
+    public void callEvent(Consumer<EventHandler> function) {
+        eventHandlers.forEach(function);
     }
 
     public void startupAllPlugins() {
