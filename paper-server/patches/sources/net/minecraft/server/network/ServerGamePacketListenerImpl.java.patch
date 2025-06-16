@@ -1,0 +1,33 @@
+--- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
++++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
+@@ -8,6 +_,10 @@
+ import com.mojang.brigadier.StringReader;
+ import com.mojang.brigadier.suggestion.Suggestions;
+ import com.mojang.logging.LogUtils;
++import dev.akarah.faarah.api.event.player.PlayerMoveEvent;
++import dev.akarah.faarah.api.util.FinePosition;
++import dev.akarah.faarah.server.entity.EntityImpl;
++import dev.akarah.faarah.server.plugin.PluginRepository;
+ import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
+ import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
+ import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
+@@ -974,6 +_,19 @@
+     @Override
+     public void handleMovePlayer(ServerboundMovePlayerPacket packet) {
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel());
++        // Faarah start
++        var event = new PlayerMoveEvent(
++                new EntityImpl(this.player),
++                FinePosition.of(
++                        packet.getX(this.player.getX()),
++                        packet.getY(this.player.getY()),
++                        packet.getZ(this.player.getZ()),
++                        packet.getYRot(this.getPlayer().getYRot()),
++                        packet.getXRot(this.getPlayer().getXRot())
++                )
++        );
++        PluginRepository.getInstance().callEvent(h -> h.playerMoveEvent(event));
++        // Faarah end
+         if (containsInvalidValues(packet.getX(0.0), packet.getY(0.0), packet.getZ(0.0), packet.getYRot(0.0F), packet.getXRot(0.0F))) {
+             this.disconnect(Component.translatable("multiplayer.disconnect.invalid_player_movement"));
+         } else {

@@ -1,5 +1,7 @@
 package dev.akarah.faarah.api.registry;
 
+import dev.akarah.faarah.api.util.ResourceLocation;
+
 import java.util.Optional;
 
 public interface Registry<T> {

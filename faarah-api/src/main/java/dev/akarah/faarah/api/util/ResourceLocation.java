@@ -1,4 +1,6 @@
-package dev.akarah.faarah.api.registry;
+package dev.akarah.faarah.api.util;
+
+import dev.akarah.faarah.api.registry.Registry;
 
 public class ResourceLocation {
     private final String namespace;
