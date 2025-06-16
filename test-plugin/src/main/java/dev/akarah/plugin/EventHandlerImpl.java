@@ -7,5 +7,6 @@ public class EventHandlerImpl implements EventHandler {
     @Override
     public void playerMoveEvent(PlayerMoveEvent event) {
         event.player().sendMessage(event.newPosition().toString());
+        event.player().sendMessage(event.player().components().toString());
     }
 }

@@ -44,4 +44,9 @@ public class ResourceLocation {
             return new Typed<>(registry, path);
         }
     }
+
+    @Override
+    public String toString() {
+        return this.namespace() + ":" + this.value();
+    }
 }
