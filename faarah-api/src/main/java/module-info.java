@@ -1,5 +1,9 @@
-module faarah.api {
-    exports dev.akarah.faarah.api;
+import dev.akarah.faarah.api.plugin.Plugin;
 
-    uses dev.akarah.faarah.api.Plugin;
+module faarah.api {
+    exports dev.akarah.faarah.api.registry;
+    exports dev.akarah.faarah.api.event;
+    exports dev.akarah.faarah.api.plugin;
+
+    uses Plugin;
 }

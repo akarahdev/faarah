@@ -1,7 +1,7 @@
 package dev.akarah.faarah.server.plugin;
 
-import dev.akarah.faarah.api.EventHandler;
-import dev.akarah.faarah.api.Plugin;
+import dev.akarah.faarah.api.event.EventHandler;
+import dev.akarah.faarah.api.plugin.Plugin;
 
 import java.util.HashSet;
 import java.util.ServiceLoader;

@@ -1,7 +1,7 @@
 
 package dev.akarah.plugin;
 
-import dev.akarah.faarah.api.Plugin;
+import dev.akarah.faarah.api.plugin.Plugin;
 
 public class Main implements Plugin {
     @Override

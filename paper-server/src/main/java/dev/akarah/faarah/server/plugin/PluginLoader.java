@@ -1,13 +1,12 @@
 package dev.akarah.faarah.server.plugin;
 
-import dev.akarah.faarah.api.EventHandler;
-import dev.akarah.faarah.api.Plugin;
+import dev.akarah.faarah.api.event.EventHandler;
+import dev.akarah.faarah.api.plugin.Plugin;
 
 import java.io.IOException;
 import java.lang.module.ModuleDescriptor;
 import java.lang.module.ModuleFinder;
 import java.lang.module.ModuleReference;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
@@ -91,11 +90,11 @@ public class PluginLoader {
         var clazz = classLoader.loadClass(name);
 
         switch (service) {
-            case "dev.akarah.faarah.api.Plugin" -> {
+            case "dev.akarah.faarah.api.plugin.Plugin" -> {
                 var plugin = createInstanceUnsafe(clazz);
                 PluginRepository.getInstance().loadPlugin((Plugin) plugin);
             }
-            case "dev.akarah.faarah.api.EventHandler" -> {
+            case "dev.akarah.faarah.api.event.EventHandler" -> {
                 var eventHandler = createInstanceUnsafe(clazz);
                 PluginRepository.getInstance().loadEventHandler((EventHandler) eventHandler);
             }
