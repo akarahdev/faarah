@@ -1,10 +1,15 @@
 --- a/net/minecraft/server/network/ServerGamePacketListenerImpl.java
 +++ b/net/minecraft/server/network/ServerGamePacketListenerImpl.java
-@@ -8,6 +_,10 @@
+@@ -8,6 +_,15 @@
  import com.mojang.brigadier.StringReader;
  import com.mojang.brigadier.suggestion.Suggestions;
  import com.mojang.logging.LogUtils;
++import dev.akarah.faarah.api.event.CancellationToken;
++import dev.akarah.faarah.api.event.EventHandler;
++import dev.akarah.faarah.api.event.player.PlayerChangeSlotEvent;
++import dev.akarah.faarah.api.event.player.PlayerChatEvent;
 +import dev.akarah.faarah.api.event.player.PlayerMoveEvent;
++import dev.akarah.faarah.api.event.player.PlayerSwapHandsEvent;
 +import dev.akarah.faarah.api.util.FinePosition;
 +import dev.akarah.faarah.server.entity.EntityImpl;
 +import dev.akarah.faarah.server.plugin.PluginRepository;
@@ -26,8 +31,48 @@
 +                        packet.getXRot(this.getPlayer().getXRot())
 +                )
 +        );
-+        PluginRepository.getInstance().callEvent(h -> h.playerMoveEvent(event));
++        PluginRepository.getInstance().callEvent(event, EventHandler::playerMove);
 +        // Faarah end
          if (containsInvalidValues(packet.getX(0.0), packet.getY(0.0), packet.getZ(0.0), packet.getYRot(0.0F), packet.getXRot(0.0F))) {
              this.disconnect(Component.translatable("multiplayer.disconnect.invalid_player_movement"));
          } else {
+@@ -1183,6 +_,13 @@
+             switch (action) {
+                 case SWAP_ITEM_WITH_OFFHAND:
+                     if (!this.player.isSpectator()) {
++                        // Faarah start
++                        var event = new PlayerSwapHandsEvent(new EntityImpl(this.player), CancellationToken.of());
++                        PluginRepository.getInstance().callEvent(event, EventHandler::playerSwapHands);
++                        if(event.cancelled().isCancelled()) {
++                            return;
++                        }
++                        // Faarah end
+                         ItemStack itemInHand = this.player.getItemInHand(InteractionHand.OFF_HAND);
+                         this.player.setItemInHand(InteractionHand.OFF_HAND, this.player.getItemInHand(InteractionHand.MAIN_HAND));
+                         this.player.setItemInHand(InteractionHand.MAIN_HAND, itemInHand);
+@@ -1365,6 +_,11 @@
+ 
+             this.player.getInventory().setSelectedSlot(packet.getSlot());
+             this.player.resetLastActionTime();
++
++            // Faarah start
++            var event = new PlayerChangeSlotEvent(new EntityImpl(this.player), packet.getSlot());
++            PluginRepository.getInstance().callEvent(event, EventHandler::playerChangeSlotEvent);
++            // Faarah end
+         } else {
+             LOGGER.warn("{} tried to set an invalid carried item", this.player.getName().getString());
+         }
+@@ -1372,6 +_,13 @@
+ 
+     @Override
+     public void handleChat(ServerboundChatPacket packet) {
++        // Faarah start
++        var event = new PlayerChatEvent(new EntityImpl(this.player), packet.message(), CancellationToken.of());
++        PluginRepository.getInstance().callEvent(event, EventHandler::playerChatEvent);
++        if(event.token().isCancelled()) {
++            return;
++        }
++        // Faarah end
+         Optional<LastSeenMessages> optional = this.unpackAndApplyLastSeen(packet.lastSeenMessages());
+         if (!optional.isEmpty()) {
+             this.tryHandleChat(packet.message(), () -> {

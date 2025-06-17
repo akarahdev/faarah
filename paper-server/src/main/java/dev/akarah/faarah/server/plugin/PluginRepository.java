@@ -2,6 +2,7 @@ package dev.akarah.faarah.server.plugin;
 
 import dev.akarah.faarah.api.event.EventHandler;
 import dev.akarah.faarah.api.plugin.Plugin;
+import org.apache.logging.log4j.util.BiConsumer;
 
 import java.util.HashSet;
 import java.util.ServiceLoader;
@@ -29,6 +30,10 @@ public class PluginRepository {
 
     public void callEvent(Consumer<EventHandler> function) {
         eventHandlers.forEach(function);
+    }
+
+    public <T> void callEvent(T event, BiConsumer<EventHandler, T> consumer) {
+        eventHandlers.forEach(handler -> consumer.accept(handler, event));
     }
 
     public void startupAllPlugins() {

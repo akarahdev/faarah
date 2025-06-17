@@ -1,0 +1,41 @@
+--- a/net/minecraft/server/level/ServerPlayer.java
++++ b/net/minecraft/server/level/ServerPlayer.java
+@@ -22,6 +_,13 @@
+ import java.util.stream.Collectors;
+ import javax.annotation.Nonnull;
+ import javax.annotation.Nullable;
++
++import dev.akarah.faarah.api.event.CancellationToken;
++import dev.akarah.faarah.api.event.EventHandler;
++import dev.akarah.faarah.api.event.player.PlayerDropItemEvent;
++import dev.akarah.faarah.api.event.player.PlayerPickupItemEvent;
++import dev.akarah.faarah.server.entity.EntityImpl;
++import dev.akarah.faarah.server.plugin.PluginRepository;
+ import net.minecraft.ChatFormatting;
+ import net.minecraft.CrashReport;
+ import net.minecraft.CrashReportCategory;
+@@ -1921,6 +_,10 @@
+     public boolean drop(boolean dropStack) {
+         Inventory inventory = this.getInventory();
+         ItemStack itemStack = inventory.removeFromSelected(dropStack);
++        // Faarah start
++        var event = new PlayerDropItemEvent(new EntityImpl(this));
++        PluginRepository.getInstance().callEvent(event, EventHandler::playerDropItem);
++        // Faarah end
+         this.containerMenu
+             .findSlot(inventory, inventory.getSelectedSlot())
+             .ifPresent(slot -> this.containerMenu.setRemoteSlot(slot, inventory.getSelectedItem()));
+@@ -1949,6 +_,13 @@
+ 
+     @Override
+     public void onItemPickup(ItemEntity itemEntity) {
++        // Faarah start
++        var event = new PlayerPickupItemEvent(new EntityImpl(this), new EntityImpl(itemEntity), CancellationToken.of());
++        PluginRepository.getInstance().callEvent(event, EventHandler::playerPickupItem);
++        if(event.cancelled().isCancelled()) {
++            return;
++        }
++        // Faarah end
+         super.onItemPickup(itemEntity);
+         Entity owner = itemEntity.getOwner();
+         if (owner != null) {
