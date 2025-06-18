@@ -16,10 +16,10 @@
  import it.unimi.dsi.fastutil.ints.Int2ObjectMaps;
  import it.unimi.dsi.fastutil.ints.Int2ObjectMap.Entry;
  import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
-@@ -974,6 +_,19 @@
+@@ -990,6 +_,19 @@
      @Override
      public void handleMovePlayer(ServerboundMovePlayerPacket packet) {
-         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.serverLevel());
+         PacketUtils.ensureRunningOnSameThread(packet, this, this.player.level());
 +        // Faarah start
 +        var event = new PlayerMoveEvent(
 +                new EntityImpl(this.player),
@@ -36,7 +36,7 @@
          if (containsInvalidValues(packet.getX(0.0), packet.getY(0.0), packet.getZ(0.0), packet.getYRot(0.0F), packet.getXRot(0.0F))) {
              this.disconnect(Component.translatable("multiplayer.disconnect.invalid_player_movement"));
          } else {
-@@ -1183,6 +_,13 @@
+@@ -1199,6 +_,13 @@
              switch (action) {
                  case SWAP_ITEM_WITH_OFFHAND:
                      if (!this.player.isSpectator()) {
@@ -50,7 +50,7 @@
                          ItemStack itemInHand = this.player.getItemInHand(InteractionHand.OFF_HAND);
                          this.player.setItemInHand(InteractionHand.OFF_HAND, this.player.getItemInHand(InteractionHand.MAIN_HAND));
                          this.player.setItemInHand(InteractionHand.MAIN_HAND, itemInHand);
-@@ -1365,6 +_,11 @@
+@@ -1381,6 +_,11 @@
  
              this.player.getInventory().setSelectedSlot(packet.getSlot());
              this.player.resetLastActionTime();
@@ -62,7 +62,7 @@
          } else {
              LOGGER.warn("{} tried to set an invalid carried item", this.player.getName().getString());
          }
-@@ -1372,6 +_,13 @@
+@@ -1388,6 +_,13 @@
  
      @Override
      public void handleChat(ServerboundChatPacket packet) {

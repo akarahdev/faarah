@@ -13,7 +13,7 @@ repositories {
 }
 
 dependencies {
-    mache("io.papermc:mache:1.21.5+build.3")
+    mache("io.papermc:mache:1.21.6+build.1")
     paperclip("io.papermc:paperclip:3.0.3")
     implementation(project(":faarah-api"))
 }
@@ -23,7 +23,7 @@ java {
 }
 
 paperweight {
-    minecraftVersion = "1.21.5"
+    minecraftVersion = "1.21.6"
     gitFilePatches = false
 
     reobfPackagesToFix.addAll(

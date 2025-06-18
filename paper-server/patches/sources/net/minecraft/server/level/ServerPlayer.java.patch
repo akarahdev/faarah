@@ -14,7 +14,7 @@
  import net.minecraft.ChatFormatting;
  import net.minecraft.CrashReport;
  import net.minecraft.CrashReportCategory;
-@@ -1921,6 +_,10 @@
+@@ -1961,6 +_,10 @@
      public boolean drop(boolean dropStack) {
          Inventory inventory = this.getInventory();
          ItemStack itemStack = inventory.removeFromSelected(dropStack);
@@ -25,7 +25,7 @@
          this.containerMenu
              .findSlot(inventory, inventory.getSelectedSlot())
              .ifPresent(slot -> this.containerMenu.setRemoteSlot(slot, inventory.getSelectedItem()));
-@@ -1949,6 +_,13 @@
+@@ -1989,6 +_,13 @@
  
      @Override
      public void onItemPickup(ItemEntity itemEntity) {
